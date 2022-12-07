@@ -1,14 +1,11 @@
-from tictactoe.board import Board
-
+from tictactoe.play import Play
+from tictactoe.tournament import Tournament
 
 if __name__ == "__main__":
-    board = Board()
+    # Random play
+    game = Play()
+    game.random()
 
-    while not board.is_game_over():
-        x, y = board.get_random_move()
-        board.move(x=x, y=y, player=board.player)
-        board.next_player()
-
-    over, winner = board.is_game_over()
-    print(f"{winner=}")
-    print(f"{board}")
+    # Tournament
+    arena = Tournament(sizes=range(3, 4), depths=range(1, 2), n=range(3))
+    arena.play()

@@ -7,5 +7,5 @@ if __name__ == "__main__":
     game.random()
 
     # Tournament
-    arena = Tournament(sizes=range(3, 4), depths=range(1, 2), n=range(3))
+    arena = Tournament(sizes=range(3, 6), depths=range(1, 4), n=range(1))
     arena.play()

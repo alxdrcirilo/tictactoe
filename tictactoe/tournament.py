@@ -1,5 +1,6 @@
 import logging
 import time
+from math import inf
 
 import pandas as pd
 
@@ -14,7 +15,11 @@ class Tournament:
         assert sizes.start >= 3, "Minimum board size is 3"
         assert depths.start >= 1, "Minimum depth is 1"
         assert n.start >= 0, "Minimum number of replicates is 1"
-        self.modes = ["random_vs_random", "random_vs_minimax"]
+        self.modes = [
+            "random_vs_random",
+            "random_vs_minimax",
+            "random_vs_minimax_ab",
+        ]
         self.games = range(100)
         self.sizes = sizes
         self.depths = depths
@@ -31,6 +36,8 @@ class Tournament:
                     game.random()
                 elif m == "random_vs_minimax":
                     game.minimax(depth=d)
+                elif m == "random_vs_minimax_ab":
+                    game.minimax(depth=d, alpha=-inf, beta=inf)
                 winners[game.board.winner] += 1
 
             elapsed = time.process_time() - start

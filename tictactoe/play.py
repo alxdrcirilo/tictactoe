@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from tictactoe.board import Board
 from tictactoe.logic import Logic
 
@@ -15,7 +13,9 @@ class Play:
             self.board.move(x=x, y=y, player=self.board.player)
             self.board.player = self.board.get_next_player()
 
-    def minimax(self, depth: int = 3) -> None:
+    def minimax(
+        self, depth: int = 3, alpha: float | None = None, beta: float | None = None
+    ) -> None:
         while not self.board.is_over():
             if self.board.player == 0:
                 x, y = self.board.get_random_move()
@@ -23,20 +23,13 @@ class Play:
                 self.board.player = self.board.get_next_player()
 
             elif self.board.player == 1:
-                scores = {}
-                for (x, y) in self.board.get_moves():
-                    self.board.move(x=x, y=y, player=self.board.player)
-                    state = deepcopy(self.board)
-                    score = self.logic.minimax(
-                        state=state,
-                        depth=depth,
-                        maximizer=True,
-                        player=self.board.player,
-                    )
-                    scores[(x, y)] = score
-                    self.board.undo(x, y)
-
-                # Get first <(x, y)> of max <score>
-                x, y = max(scores, key=scores.get)
+                x, y = self.logic.minimax(
+                    state=self.board,
+                    depth=depth,
+                    maximizer=True,
+                    player=self.board.player,
+                    a=alpha,
+                    b=beta,
+                )[0]
                 self.board.move(x=x, y=y, player=self.board.player)
                 self.board.player = self.board.get_next_player()
